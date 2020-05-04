@@ -4,12 +4,14 @@ Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
-
+import os
 from app import app, db, login_manager
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm
-from app.models import UserProfile
+from app.forms import LoginForm, NewPost
+from werkzeug.utils import secure_filename
+
+# from app.models import UserProfile
 
 
 ###
@@ -57,9 +59,32 @@ def login():
 def load_user(id):
     return UserProfile.query.get(int(id))
 
+
+
+@app.route('/dashboard', methods=['POST', 'GET'])
+def dashboard():
+    form = NewPost()
+           
+    if request.method == 'POST' and form.validate_on_submit():
+        # Get file data and save to your uploads folder
+        if form.photo.data: #for both text and photo
+            photo = form.photo.data 
+            description = form.description.data
+
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return jsonify(message = [{"message" : "File Upload Successful", "filename": filename, "description": description}])
+        
+        else: #only posts text
+            description = form.description.data 
+            return jsonify(message = [{"message" : "Post Successful", "description": description}])
+           
+    return render_template('dashboard.html', form=form)
+
 ###
 # The functions below should be applicable to all Flask apps.
 ###
+
 
 
 @app.route('/<file_name>.txt')
