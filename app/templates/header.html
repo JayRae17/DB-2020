@@ -20,11 +20,11 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <!-- <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for('home') }}"
-          >MyBook Application <span class="sr-only">(current)</span></a
-        >
-      </li> -->
+
+        <form action="{{ url_for('results', term=term) }}">
+          {{ srchForm.searchTerm(class='form-control srch', placeholder = "Search") }}
+        </form>
+
       </ul>
 
       <!-- <ul class="navbar-nav">
@@ -46,7 +46,7 @@
 
         <img  class="d-inline-block align-top mr-2 circle"/>
           <li class="nav-item">
-            <a class="nav-link pl-1 mr-3 dark" href="{{ url_for('login') }}">User Name</a>
+            <a class="nav-link pl-1 mr-3 dark" href="{{ url_for('profile') }}">User Name</a>
           </li>
       </ul>
 

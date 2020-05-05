@@ -11,4 +11,12 @@ class LoginForm(FlaskForm):
 class NewPost(FlaskForm):
     description = TextAreaField('Description', validators=[InputRequired()])
     photo = FileField('Photo', validators=[FileAllowed(['jpg', 'png', 'Images only!'])])
-    # photo = FileField('Photo', validators=[FileAllowed(['jpg', 'png', 'Images only!'])])
+
+
+
+class Search(FlaskForm):
+    searchTerm = StringField('searchTerm', validators=[InputRequired()])
+
+
+class ProPicUpload(FlaskForm):
+    propic = FileField(validators=[FileRequired(),FileAllowed(['jpg', 'png', 'Images only!'])])

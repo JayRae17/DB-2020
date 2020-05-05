@@ -8,7 +8,7 @@ import os
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm, NewPost
+from app.forms import LoginForm, NewPost, Search, ProPicUpload
 from werkzeug.utils import secure_filename
 
 # from app.models import UserProfile
@@ -21,17 +21,20 @@ from werkzeug.utils import secure_filename
 @app.route('/')
 def home():
     """Render website's home page."""
-    return render_template('home.html')
+    srchForm = Search()
+    return render_template('home.html', srchForm=srchForm)
 
 
 @app.route('/about/')
 def about():
     """Render the website's about page."""
-    return render_template('about.html')
+    srchForm = Search()
+    return render_template('about.html', srchForm=srchForm)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    srchForm = Search()
     form = LoginForm()
     if request.method == "POST":
         # change this to actually validate the entire form submission
@@ -50,7 +53,7 @@ def login():
 
             # remember to flash a message to the user
             return redirect(url_for("home"))  # they should be redirected to a secure-page route instead
-    return render_template("login.html", form=form)
+    return render_template("login.html", form=form, srchForm=srchForm)
 
 
 # user_loader callback. This callback is used to reload the user object from
@@ -63,7 +66,12 @@ def load_user(id):
 
 @app.route('/dashboard', methods=['POST', 'GET'])
 def dashboard():
+    srchForm = Search()
     form = NewPost()
+    
+    if request.method == 'POST' and srchForm.validate_on_submit():
+        term = srchForm.searchTerm.data 
+        results(term)
            
     if request.method == 'POST' and form.validate_on_submit():
         # Get file data and save to your uploads folder
@@ -79,13 +87,53 @@ def dashboard():
             description = form.description.data 
             return jsonify(message = [{"message" : "Post Successful", "description": description}])
            
-    return render_template('dashboard.html', form=form)
+    return render_template('dashboard.html', form=form, srchForm = srchForm)
+
+
+@app.route('/friends/')
+def friends():
+    """Render the website's friends page."""
+    srchForm = Search()
+    return render_template('friends.html', srchForm = srchForm)
+
+
+@app.route('/results/')
+def results():
+    srchForm = Search()
+    return render_template('results.html', srchForm = srchForm)
+
+
+@app.route('/profile/')
+def profile():
+    """Render website's home page."""
+    srchForm = Search()
+    form = NewPost()
+    uploadForm = ProPicUpload()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        # Get file data and save to your uploads folder
+        if form.photo.data: #for both text and photo
+            photo = form.photo.data 
+            description = form.description.data
+
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return jsonify(message = [{"message" : "File Upload Successful", "filename": filename, "description": description}])
+        
+        else: #only posts text
+            description = form.description.data 
+            return jsonify(message = [{"message" : "Post Successful", "description": description}])
+
+    if request.method == 'POST' and uploadForm.validate_on_submit(): 
+        propic = uploadForm.propic.data 
+        filename = secure_filename(propic.filename)
+        propic.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    return render_template('profile.html', srchForm=srchForm, uploadForm = uploadForm, form = form)
 
 ###
 # The functions below should be applicable to all Flask apps.
 ###
-
-
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
@@ -108,7 +156,8 @@ def add_header(response):
 @app.errorhandler(404)
 def page_not_found(error):
     """Custom 404 page."""
-    return render_template('404.html'), 404
+    srchForm = Search()
+    return render_template('404.html', srchForm=srchForm), 404
 
 
 if __name__ == '__main__':

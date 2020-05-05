@@ -4,24 +4,17 @@
         <nav id="sidebar">
            
             <div class="sidebar-link">
-                    <a class = "nav-link cover">
+                    <a href="{{ url_for('dashboard') }}" class = "nav-link dark cover">
                         <p class = "links smlgrow">
                             <img src="../static/icons/buildings.png" class="side-icon mr-2"/>
                             Dashboard
                         </p>
                     </a>
 
-                    <a class = "nav-link">
+                    <a href="{{ url_for('friends') }}" class = "nav-link dark" >
                         <p class = "links reg-link smlgrow">
                             <img src="../static/icons/user.png" class="side-icon mr-2"/>
                             Your Friends
-                        </p>
-                    </a>
-
-                    <a class = "nav-link">
-                        <p class = "links reg-link smlgrow">
-                            <img src="../static/icons/plus.png" class="side-icon mr-2"/>
-                            Add Friends
                         </p>
                     </a>
 
