@@ -1,0 +1,66 @@
+{% extends "sidebar.html" %} {% block div %}
+
+<div class = "page-header"> 
+    Your Groups
+</div>
+
+<div class = "mycard mt-5 mb-5">
+
+    <div class = "myrow">
+
+        <div class = "col-4 grp-tile mr-2"> Group Name </div>
+
+
+        <div class = "col-4 grp-tile mr-2" data-toggle="modal" data-target="#CEModal">
+            <img src="../static/icons/plusSign.png" width = "50" height = "50" class = "grow"/>
+        </div>
+
+    
+    </div>
+</div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="CEModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <h5 class="modal-title format" id="exampleModalLabel">Content Editors</h5>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+        </div>
+
+        <div class="modal-body pl-3 pl-3">
+
+          
+        <form action="{{ url_for('yourGroups') }}" method="post" enctype="multipart/form-data" class = "mr-5 ml-5">
+            {{ form.csrf_token }}
+            {{ form.grpname.label }}
+            {{ form.grpname(class='form-control post mb-4') }}
+
+
+            {{ form.purpose.label }}
+            {{ form.purpose(class='form-control post mb-4') }}
+
+            <hr>
+            {{ form.CEusername(class='form-control post', placeholder = "add content editor by username") }}
+               
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" name="submit" class="btn btn-primary">Save</button>
+        </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}

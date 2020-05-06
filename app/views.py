@@ -8,7 +8,7 @@ import os
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm, NewPost, Search, ProPicUpload, CEForm, RegisterForm
+from app.forms import LoginForm, NewPost, Search, ProPicUpload, CEForm, RegisterForm, CreateGrp
 from werkzeug.utils import secure_filename
 
 # from app.models import UserProfile
@@ -140,9 +140,19 @@ def profile():
 
 
 
+@app.route('/yourgroups', methods=['POST', 'GET'])
+def yourGroups():
+    """Render Your Groups page"""
+    srchForm = Search()
+    form = CreateGrp()
+    return render_template('your_groups.html', srchForm=srchForm, form = form)
+
+
+
+
 @app.route('/grpProfile/', methods=['POST', 'GET'])
 def grpProfile():
-    """Render website's home page."""
+    """Render website's group profile page."""
     srchForm = Search()
     form = NewPost()
     uploadForm = ProPicUpload()

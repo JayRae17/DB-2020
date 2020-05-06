@@ -33,3 +33,9 @@ class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     email = StringField("Email",  validators=[InputRequired()])
     password = PasswordField('Password', validators=[InputRequired()])
+
+
+class CreateGrp(FlaskForm):
+    grpname = StringField('Group Name', validators=[InputRequired()])
+    purpose = TextAreaField('Purpose', validators=[InputRequired()])
+    CEusername = StringField('username', validators=[InputRequired()])
