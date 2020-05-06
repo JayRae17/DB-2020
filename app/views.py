@@ -8,7 +8,7 @@ import os
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
-from app.forms import LoginForm, NewPost, Search, ProPicUpload
+from app.forms import LoginForm, NewPost, Search, ProPicUpload, CEForm, RegisterForm
 from werkzeug.utils import secure_filename
 
 # from app.models import UserProfile
@@ -55,6 +55,13 @@ def login():
             return redirect(url_for("home"))  # they should be redirected to a secure-page route instead
     return render_template("login.html", form=form, srchForm=srchForm)
 
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    """Render the website's about page."""
+    srchForm = Search()
+    form = RegisterForm()
+    return render_template('register.html', form = form, srchForm=srchForm)
+
 
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
@@ -71,7 +78,7 @@ def dashboard():
     
     if request.method == 'POST' and srchForm.validate_on_submit():
         term = srchForm.searchTerm.data 
-        results(term)
+        results()
            
     if request.method == 'POST' and form.validate_on_submit():
         # Get file data and save to your uploads folder
@@ -90,20 +97,20 @@ def dashboard():
     return render_template('dashboard.html', form=form, srchForm = srchForm)
 
 
-@app.route('/friends/')
+@app.route('/friends/', methods=['POST', 'GET'])
 def friends():
     """Render the website's friends page."""
     srchForm = Search()
     return render_template('friends.html', srchForm = srchForm)
 
 
-@app.route('/results/')
+@app.route('/results/', methods=['POST', 'GET'])
 def results():
     srchForm = Search()
     return render_template('results.html', srchForm = srchForm)
 
 
-@app.route('/profile/')
+@app.route('/profile/', methods=['POST', 'GET'])
 def profile():
     """Render website's home page."""
     srchForm = Search()
@@ -130,6 +137,37 @@ def profile():
         propic.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
     return render_template('profile.html', srchForm=srchForm, uploadForm = uploadForm, form = form)
+
+
+
+@app.route('/grpProfile/', methods=['POST', 'GET'])
+def grpProfile():
+    """Render website's home page."""
+    srchForm = Search()
+    form = NewPost()
+    uploadForm = ProPicUpload()
+    ceForm = CEForm()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        # Get file data and save to your uploads folder
+        if form.photo.data: #for both text and photo
+            photo = form.photo.data 
+            description = form.description.data
+
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return jsonify(message = [{"message" : "File Upload Successful", "filename": filename, "description": description}])
+        
+        else: #only posts text
+            description = form.description.data 
+            return jsonify(message = [{"message" : "Post Successful", "description": description}])
+
+    if request.method == 'POST' and uploadForm.validate_on_submit(): 
+        propic = uploadForm.propic.data 
+        filename = secure_filename(propic.filename)
+        propic.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    return render_template('group_profile.html', srchForm=srchForm, uploadForm=uploadForm, form=form, ceForm=ceForm)
 
 ###
 # The functions below should be applicable to all Flask apps.

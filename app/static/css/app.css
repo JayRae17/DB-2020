@@ -35,7 +35,7 @@ a.navbar-brand.nh{
 
 
 a.nav-link{
-  font-size: 15px;
+  font-size: 16px;
   color: #6369FF;
 }
 
@@ -81,6 +81,65 @@ a.nav-link.dark{
   padding: .375rem 2rem;
   margin-left: 21rem;
   width: 80%;
+}
+
+/************* LOGIN *****************/
+.form-head{
+  font-size: 1.5rem;
+  font-weight: 400;
+  color:rgb(79, 147, 250);
+  margin-bottom: 3rem;
+}
+
+.btn.btn-purple.btn-block.w-sml{
+  width: 20%;
+}
+
+.w-med{
+  width: 92%;
+}
+
+.w-lrg{
+  width: 100%;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.login-card {
+  background-color: #fff;
+  padding: 2rem 15.5rem;
+  border-radius: 6px;
+  border: 1px solid #F4F4F4;
+}
+
+.lrgLogo{
+  font-size: 5rem;
+  color:rgb(79, 147, 250);
+  margin-top: 5rem;
+}
+
+.btn-purple{
+  background-color: #2B68C2;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.btn-purple:hover{
+  background-color: rgb(36, 88, 167);
+}
+
+
+/************* REGISTER **************/
+
+.reg-card{
+  background-color: #fff;
+  padding: 2rem 9rem;
+  border-radius: 6px;
+  border: 1px solid #F4F4F4;
 }
 
 /************* SIDEBAR ***************/
@@ -289,7 +348,7 @@ a.nav-link.dark{
   border-radius: 6px;
   /* margin-top: 0.5rem; */
   /* float: right; */
-  margin-left: 44%;
+  /* margin-left: 44%; */
 }
 
 .post-btn:hover{
@@ -449,4 +508,35 @@ a.nav-link.dark{
 
 .tryyy{
   text-align: center;
+}
+
+/******* GROUP PROFILE *********/
+.grpbanner{
+  background: linear-gradient(82.47deg, #A0A4FF -12.74%, #187CA7 311.36%);
+  border: 1px solid #F4F4F4;
+  box-sizing: border-box;
+  border-radius: 6px;
+  margin-left: 15rem;
+  margin-right: 15rem;
+  /* width: 80%;
+  height: 80%; */
+}
+
+
+.CE-btn{
+  background-color: #fff;
+  border-left: 2px solid #6369FF;
+  border-right: 2px solid #6369FF;
+  border-top: none;
+  border-bottom: none;
+  color: #6369FF;
+  padding: 0.1rem 1.2rem;
+  /* margin-top: 0.5rem; */
+  /* float: right; */
+  /* margin-left: 44%; */
+}
+
+.format{
+  color: #6369FF;
+  font-size: 18px;
 }
